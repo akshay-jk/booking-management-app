@@ -1,0 +1,89 @@
+*** Booking Management Software ***
+
+--> Model
+
+This node application has designed in such a way that there is only one provider providing more than one services and more than one customer can be signed up to this application. For each service, any no. of customers can ask request. On requesting service provider will can accept or reject.
+
+*The workflow of the this project has been altered at somepoint, according to the design done by myself
+
+Mainly there are 4 states for a request
+    #Pending (Intial State)
+    #Active (after service provider accepts)
+    #Payment (after completing the service)
+
+
+--> Routes and Data Packets
+
+*There is a file called guards.js which exports a function which can be used for authorization. For simplicity the functionality has not been added. The function is called on every routes, but it has been kept empty till now.
+
+*The invoice generation and image uploads are stored inside component folder for now.
+
+http://localhost:3000/api/add-user (POST)
+    request body 
+    {
+    "userName": "",
+    "userID": "----@---.com",
+    "userType": "Customer",
+    "userLocation": {
+        "street": "",
+        "province": ""
+    }
+}
+
+http://localhost:3000/api/add-service (POST)
+    request body 
+    {
+    "serviceName":"Martial Arts",
+    "serviceCategory":"Self Defense",
+    "price":"40",
+    "description":"Self Defense is necessary"
+    }
+
+http://localhost:3000/api/request-service/:id (POST)
+    id - ServiceID
+    req.header['auth] should contain user id
+
+http://localhost:3000/api/get-user-list/ (GET)
+    for fetching user details
+
+http://localhost:3000/api/get-service-list/ (GET)
+    for fetching all services available
+
+http://localhost:3000/api/customer-requested/:id (GET)
+    id - ServiceID
+    used to find how many customers requested a particular service
+
+http://localhost:3000/api/customer-previous-purchase/:id (GET)
+    id - user id
+    used to check how many services a user has succesfully completed
+
+http://localhost:3000/api/accept-customer-request/:id (PUT)
+    id - id of the request
+    this route is used by service provider to accept a user request. upon this, the status of the request will be changed to Active
+
+http://localhost:3000/api/generate-invoice/:id (PUT)
+    id - id of the request
+    this route is used when user successfully completes the service and he need the bill to be genereated for continuing to payments page
+
+http://localhost:3000/api/resend-invoice/:id (GET)
+    id - id of the request for which invoice is needed
+
+http://localhost:3000/api/user-image/:id (POST)
+    id - id of the user
+
+http://localhost:3000/api/service-image/:id (POST)
+    id - id of the service
+
+http://localhost:3000/api/reschedule-customer-request/ (PUT)
+    {
+        "time":"HH:MM:SS",
+        "date":"Mmm DD, YYYY",
+        "userid": -id of the user-,
+        "serviceid":"-id of the service"
+    }
+
+http://localhost:3000/api/get-user-image/:id (GET)
+    id - id of the user
+
+http://localhost:3000/api/get-service-image/:id (GET)
+    id- id of the service
